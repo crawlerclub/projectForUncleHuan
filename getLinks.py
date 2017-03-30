@@ -20,12 +20,12 @@ def getUrlLinks(driver,urlHead,urlTail,numOfPage):
 		bsObj = None
 		try:
 			driver.get(url)
-			element = WebDriverWait(driver,20).until(pageLoaded)
+			WebDriverWait(driver,20).until(pageLoaded)
 		finally:
 			bsObj = getBsObj(driver.page_source)
-		links = bsObj.findAll('a',class_ = 'query_name search-new-color')	
-		for i in range(len(links)):
-			print(i,':',links[i].attrs['href'])
+			links = bsObj.findAll('a',class_ = 'query_name search-new-color')	
+			for i in range(len(links)):
+				print(i,':',links[i].attrs['href'])
 
 
 if __name__ == "__main__":
