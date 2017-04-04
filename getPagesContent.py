@@ -10,10 +10,10 @@ import os
 
 class pageReady(object):
 	def __init__(self,name):
-		self.name = name
+		self.name = name.strip()
 	def __call__(self,driver):
 		try:
-			pagename = driver.find_element_by_css_selector('.in-block.ml10.f18.mb5.ng-binding')
+			pagename = driver.find_element_by_css_selector('.in-block.ml10.f18.mb5.ng-binding').text.strip()
 			return pagename == self.name
 		except:
 			return False
@@ -25,7 +25,7 @@ if __name__ == '__main__':
 	driver = webdriver.PhantomJS(executable_path='/Users/wujiakun/phantomjs/phantomjs-2.1.0-macosx/bin/phantomjs',desired_capabilities = dcap)
 	outputDir = 'pageFiles'
 	for c in linkFile:
-		[name,link] = c.split('\t')
+		[name,link] = c.strip().split('\t')
 		try:
 			linkname = re.findall('(\d+)',link)[0]
 			outputFile = outputDir+'/'+linkname
@@ -34,6 +34,7 @@ if __name__ == '__main__':
 				continue
 			driver.get(link)
 			time.sleep(1)
+			#WebDriverWait(driver,10).until(EC.presence_of_element_located((By.CSS_SELECTOR,'.in-block.ml10.f18.mb5.ng-binding')))
 			WebDriverWait(driver,10).until(pageReady(name))
 			bsObj = BeautifulSoup(driver.page_source,'html.parser')
 			pname = bsObj.find('div',class_='in-block ml10 f18 mb5 ng-binding').text
