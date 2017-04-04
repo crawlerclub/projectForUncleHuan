@@ -19,6 +19,7 @@ if __name__ == '__main__':
 		try:
 			bsObj = BeautifulSoup(open(infoDir+'/'+f,'r').read(),'html.parser')
 			infomation = getInfoString(bsObj)
+			infomation += f+'\n'
 			print(infomation)
 			fout.write(infomation)
 		except Exception as e:

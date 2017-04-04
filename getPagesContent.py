@@ -8,8 +8,15 @@ import time
 import re
 import os
 
-def pageReady(d):
-	return d.execute_script('return document.readyState') == 'complete'
+class pageReady(object):
+	def __init__(self,name):
+		self.name = name
+	def __call__(self,driver):
+		try:
+			pagename = driver.find_element_by_css_selector('.in-block.ml10.f18.mb5.ng-binding')
+			return pagename == self.name
+		except:
+			return False
 
 if __name__ == '__main__':
 	linkFile = open('NameLinks.txt','r')
@@ -27,7 +34,7 @@ if __name__ == '__main__':
 				continue
 			driver.get(link)
 			time.sleep(1)
-			WebDriverWait(driver,10).until(pageReady)
+			WebDriverWait(driver,10).until(pageReady(name))
 			bsObj = BeautifulSoup(driver.page_source,'html.parser')
 			pname = bsObj.find('div',class_='in-block ml10 f18 mb5 ng-binding').text
 			print('-------loading %s ---------'%(name))
